@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in — Pulse</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand brand-link" href="index.html"><span class="brand-dot"></span> Pulse</a>
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-ghost btn-sm">Home</a>
+        <button id="themeBtn" class="btn btn-ghost btn-sm" type="button">Dark mode</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container auth-container">
+    <section class="card auth-card">
+      <h1 class="auth-title">Welcome back</h1>
+      <p class="card-sub">Demo auth — accounts are stored only in this browser (localStorage).</p>
+
+      <div class="tabs" role="tablist">
+        <button id="tabSignin" class="tab active" type="button">Log in</button>
+        <button id="tabSignup" class="tab" type="button">Sign up</button>
+      </div>
+
+      <form id="signinForm" class="form" autocomplete="on">
+        <label class="field"><span>Email</span><input id="inEmail" class="input" type="email" required placeholder="you@example.com" autocomplete="email" /></label>
+        <label class="field"><span>Password</span><input id="inPass" class="input" type="password" required placeholder="••••••••" autocomplete="current-password" /></label>
+        <button class="btn btn-primary btn-block" type="submit">Log in</button>
+      </form>
+
+      <form id="signupForm" class="form hidden" autocomplete="on">
+        <label class="field"><span>Name</span><input id="upName" class="input" type="text" required maxlength="40" placeholder="Your name" autocomplete="name" /></label>
+        <label class="field"><span>Email</span><input id="upEmail" class="input" type="email" required placeholder="you@example.com" autocomplete="email" /></label>
+        <label class="field"><span>Password (min 6 chars)</span><input id="upPass" class="input" type="password" required minlength="6" placeholder="Create a password" autocomplete="new-password" /></label>
+        <button class="btn btn-primary btn-block" type="submit">Create account</button>
+      </form>
+
+      <p id="formError" class="form-error" role="alert"></p>
+      <p id="formOk" class="form-ok" role="status"></p>
+    </section>
+  </main>
+  <script src="auth.js"></script>
+</body>
+</html>
