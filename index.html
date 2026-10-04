@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pulse — Interactive App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="brand"><span class="brand-dot"></span> Pulse</div>
+      <button id="themeBtn" class="btn btn-ghost btn-sm" type="button">Dark mode</button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="hero">
+      <div class="badge">Local-first • No signup • Auto-save</div>
+      <h1>Your day, <span class="gradient">beautifully organized.</span></h1>
+      <p class="subtitle">Set your name, track a counter, and manage todos. Everything saves in your browser instantly.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Profile</div><div id="statName" class="stat-value">Guest</div></div>
+        <div class="stat"><div class="stat-label">Counter</div><div id="statCount" class="stat-value">0</div></div>
+        <div class="stat"><div class="stat-label">Tasks left</div><div id="statTodos" class="stat-value">0</div></div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <div class="card-head">
+          <div class="icon">AT</div>
+          <div><h2 class="card-title">Greeting</h2><p class="card-sub">Personalize your workspace</p></div>
+        </div>
+        <div class="profile-row">
+          <div id="avatar" class="avatar">G</div>
+          <div class="input-group">
+            <input id="nameInput" class="input" placeholder="Type your name" autocomplete="name" maxlength="40" />
+            <button id="saveBtn" class="btn btn-primary" type="button">Save</button>
+          </div>
+        </div>
+        <p id="greeting" class="greeting-text"></p>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <div class="icon icon-2">#</div>
+          <div><h2 class="card-title">Counter</h2><p class="card-sub">Tap to increment</p></div>
+        </div>
+        <div class="counter-row">
+          <div id="count" class="counter-value">0</div>
+          <div class="counter-actions">
+            <button id="decBtn" class="btn btn-icon" aria-label="Decrease" type="button">−</button>
+            <button id="incBtn" class="btn btn-primary btn-icon" aria-label="Increase" type="button">+</button>
+            <button id="resetBtn" class="btn btn-ghost" type="button">Reset</button>
+          </div>
+        </div>
+        <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
+        <p class="hint">Progress fills every 10 counts. Resets at 100.</p>
+      </section>
+    </div>
+
+    <section class="card todo-card">
+      <div class="card-head card-head-split">
+        <div class="card-head-left"><div class="icon icon-3">✓</div><div><h2 class="card-title">Todo List</h2><p class="card-sub" id="todoMeta">0 tasks</p></div></div>
+        <button id="clearDoneBtn" class="btn btn-ghost btn-sm" type="button">Clear done</button>
+      </div>
+      <form id="todoForm" class="todo-form">
+        <input id="todoInput" class="input" placeholder="Add a task and press Enter…" required maxlength="120" />
+        <button type="submit" class="btn btn-primary">Add task</button>
+      </form>
+      <ul id="todoList" class="todo-list"></ul>
+      <div id="todoEmpty" class="empty">No tasks yet. Add your first one above to get started.</div>
+    </section>
+
+    <footer class="footer">Pulse demo • Data stays in localStorage on this device</footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
