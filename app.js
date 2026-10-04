@@ -21,6 +21,58 @@ const themeBtn = document.getElementById('themeBtn');
 const statName = document.getElementById('statName');
 const statCount = document.getElementById('statCount');
 const statTodos = document.getElementById('statTodos');
+const authLink = document.getElementById('authLink');
+const logoutBtn = document.getElementById('logoutBtn');
+const userBadge = document.getElementById('userBadge');
+const adminLink = document.getElementById('adminLink');
+const ADMINS = ['mustafabus.n.h.sh@gmail.com'];
+
+function currentAccount() {
+  try {
+    const email = (localStorage.getItem('pulse_session') || '').toLowerCase();
+    if (!email) return null;
+    const users = JSON.parse(localStorage.getItem('pulse_users') || '{}');
+    return users[email] || null;
+  } catch { return null; }
+}
+function renderAuth() {
+  const acc = currentAccount();
+  if (!authLink || !logoutBtn || !userBadge) return;
+  authLink.hidden = !!acc;
+  logoutBtn.hidden = !acc;
+  userBadge.hidden = !acc;
+  if (acc) userBadge.textContent = acc.name;
+  if (adminLink) adminLink.hidden = !(acc && ADMINS.includes((acc.email || '').toLowerCase()));
+  // Real backend session (async upgrade)
+  try {
+    const CFG = window.PULSE_CONFIG || {};
+    if (window.supabase && CFG.SUPABASE_URL && !String(CFG.SUPABASE_URL).includes('YOUR_')) {
+      const sb = window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY);
+      sb.auth.getSession().then(async ({ data }) => {
+        const user = data.session && data.session.user;
+        if (!user) return;
+        const name = (user.user_metadata && user.user_metadata.name) || user.email.split('@')[0];
+        userBadge.hidden = false;
+        userBadge.textContent = name;
+        authLink.hidden = true;
+        logoutBtn.hidden = false;
+        if (adminLink) adminLink.hidden = !ADMINS.includes((user.email || '').toLowerCase());
+      });
+    }
+  } catch {}
+}
+if (logoutBtn) logoutBtn.addEventListener('click', async () => {
+  localStorage.removeItem('pulse_session');
+  try {
+    const CFG = window.PULSE_CONFIG || {};
+    if (window.supabase && CFG.SUPABASE_URL && !String(CFG.SUPABASE_URL).includes('YOUR_')) {
+      const sb = window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY);
+      await sb.auth.signOut();
+    }
+  } catch {}
+  renderAuth();
+  renderProfile();
+});
 
 // --- Theme ---
 function loadTheme() {
@@ -35,9 +87,11 @@ themeBtn.addEventListener('click', () => {
   themeBtn.textContent = next === 'light' ? 'Dark mode' : 'Light mode';
 });
 
-// --- Greeting ---
+// --- Greeting (prefers logged-in account name) ---
 function renderProfile() {
-  const name = (localStorage.getItem('name') || '').trim();
+  const acc = currentAccount();
+  const stored = (localStorage.getItem('name') || '').trim();
+  const name = acc ? acc.name : stored;
   const display = name || 'Guest';
   greeting.textContent = name ? `Hello, ${name}` : '';
   avatar.textContent = (display[0] || 'G').toUpperCase();
@@ -128,8 +182,26 @@ clearDoneBtn.addEventListener('click', () => {
   renderTodos();
 });
 
-// init
-loadTheme();
-renderProfile();
-renderCount();
-renderTodos();
+// init + auth gate: login first
+async function boot() {
+  loadTheme();
+  const local = !!currentAccount();
+  let authed = local;
+  try {
+    const CFG = window.PULSE_CONFIG || {};
+    if (!local && window.supabase && CFG.SUPABASE_URL && !String(CFG.SUPABASE_URL).includes('YOUR_')) {
+      const sb = window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY);
+      const { data } = await sb.auth.getSession();
+      authed = !!data.session;
+    }
+  } catch {}
+  if (!authed) {
+    window.location.replace('auth.html');
+    return;
+  }
+  renderAuth();
+  renderProfile();
+  renderCount();
+  renderTodos();
+}
+boot();

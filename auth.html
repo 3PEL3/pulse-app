@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign in — Pulse</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
 </head>
 <body>
   <div class="bg-blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
@@ -22,25 +24,34 @@
   <main class="container auth-container">
     <section class="card auth-card">
       <h1 class="auth-title">Welcome back</h1>
-      <p class="card-sub">Demo auth — accounts are stored only in this browser (localStorage).</p>
+      <p class="card-sub" id="backendBadge">Checking backend…</p>
 
-      <div class="tabs" role="tablist">
-        <button id="tabSignin" class="tab active" type="button">Log in</button>
-        <button id="tabSignup" class="tab" type="button">Sign up</button>
+      <div id="authForms">
+        <div class="tabs" role="tablist">
+          <button id="tabSignin" class="tab active" type="button">Log in</button>
+          <button id="tabSignup" class="tab" type="button">Sign up</button>
+        </div>
+
+        <form id="signinForm" class="form" autocomplete="on">
+          <label class="field"><span>Email</span><input id="inEmail" class="input" type="email" required placeholder="you@example.com" autocomplete="email" /></label>
+          <label class="field"><span>Password</span><input id="inPass" class="input" type="password" required placeholder="••••••••" autocomplete="current-password" /></label>
+          <button class="btn btn-primary btn-block" type="submit">Log in</button>
+        </form>
+
+        <form id="signupForm" class="form hidden" autocomplete="on">
+          <label class="field"><span>Name</span><input id="upName" class="input" type="text" required maxlength="40" placeholder="Your name" autocomplete="name" /></label>
+          <label class="field"><span>Email</span><input id="upEmail" class="input" type="email" required placeholder="you@example.com" autocomplete="email" /></label>
+          <label class="field"><span>Password (min 6 chars)</span><input id="upPass" class="input" type="password" required minlength="6" placeholder="Create a password" autocomplete="new-password" /></label>
+          <label class="field"><span>Security question</span>
+            <select id="upQuestion" class="input">
+              <option value="color">What's your favorite color?</option>
+              <option value="food">What's your favorite food?</option>
+            </select>
+          </label>
+          <label class="field"><span>Your answer</span><input id="upAnswer" class="input" type="text" required maxlength="60" placeholder="e.g. blue / pizza" /></label>
+          <button class="btn btn-primary btn-block" type="submit">Create account</button>
+        </form>
       </div>
-
-      <form id="signinForm" class="form" autocomplete="on">
-        <label class="field"><span>Email</span><input id="inEmail" class="input" type="email" required placeholder="you@example.com" autocomplete="email" /></label>
-        <label class="field"><span>Password</span><input id="inPass" class="input" type="password" required placeholder="••••••••" autocomplete="current-password" /></label>
-        <button class="btn btn-primary btn-block" type="submit">Log in</button>
-      </form>
-
-      <form id="signupForm" class="form hidden" autocomplete="on">
-        <label class="field"><span>Name</span><input id="upName" class="input" type="text" required maxlength="40" placeholder="Your name" autocomplete="name" /></label>
-        <label class="field"><span>Email</span><input id="upEmail" class="input" type="email" required placeholder="you@example.com" autocomplete="email" /></label>
-        <label class="field"><span>Password (min 6 chars)</span><input id="upPass" class="input" type="password" required minlength="6" placeholder="Create a password" autocomplete="new-password" /></label>
-        <button class="btn btn-primary btn-block" type="submit">Create account</button>
-      </form>
 
       <p id="formError" class="form-error" role="alert"></p>
       <p id="formOk" class="form-ok" role="status"></p>

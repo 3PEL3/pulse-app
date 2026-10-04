@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Signed-up users</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand brand-link" href="index.html"><span class="brand-dot"></span> Pulse</a>
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-ghost btn-sm">Home</a>
+        <button id="themeBtn" class="btn btn-ghost btn-sm" type="button">Dark mode</button>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <section class="card">
+      <h1 class="auth-title">Developers only</h1>
+      <p class="card-sub" id="adminSub">Checking access…</p>
+      <div id="denied" class="empty" hidden>Access denied. Log in as a developer account.</div>
+      <div id="adminBody" hidden>
+        <p class="card-sub">Demo list — only accounts created in <b>this browser</b> (localStorage). Not global.</p>
+        <table class="table">
+          <thead><tr><th>Name</th><th>Email</th><th>Created</th></tr></thead>
+          <tbody id="userRows"></tbody>
+        </table>
+        <p class="hint" id="userCount"></p>
+      </div>
+    </section>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>
